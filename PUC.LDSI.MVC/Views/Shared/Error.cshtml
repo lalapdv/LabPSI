@@ -1,0 +1,17 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+<h1 class="text-danger">Ops!</h1>
+<h4 style="margin-top:30px;" class="text-danger">@Model.ErrorTitle</h4>
+<h3 style="margin-top:30px;">
+    @foreach (var item in Model.Errors)
+    {
+        <p>@item</p>
+    }
+</h3>
+<div>
+    @Model.Trace
+</div>
+<p style="margin-top:30px;"><a href="javascript:window.history.back();" class="btn btn-default">Voltar</a></p>
+

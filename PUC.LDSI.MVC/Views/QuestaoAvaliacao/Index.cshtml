@@ -1,0 +1,57 @@
+﻿@model AvaliacaoViewModel
+
+@{
+    ViewData["Title"] = "Questões da Avaliação";
+}
+
+<h2>Avaliação</h2>
+
+<h4>@Html.DisplayFor(model => model.Materia) / @Html.DisplayFor(model => model.Disciplina) / @Html.DisplayFor(model => model.Descricao)</h4>
+
+<p>
+    <a asp-action="Create" asp-route-avaliacaoId="@Model.Id" class="btn btn-default">Nova Questão</a>
+    <a asp-action="Index" asp-controller="Avaliacao" class="btn btn-default">Voltar</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>@Html.DisplayNameFor(model => model.Questoes.FirstOrDefault().Tipo)</th>
+            <th>@Html.DisplayNameFor(model => model.Questoes.FirstOrDefault().Enunciado)</th>
+            <th>Nº Opções</th>
+            <th>Ações</th>
+            <th>Válida</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var numeroQuestao = 1;
+
+            foreach (var item in Model.Questoes)
+            {
+                <tr>
+                    <td>@numeroQuestao</td>
+                    <td>
+                        @(item.Tipo == 1 ? "Múltipla Escolha" : "Verdadeiro ou Falso")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Enunciado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Opcoes.Count)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit" title="Editar Questão"></i></a>&nbsp;
+                        <a asp-action="Index" asp-controller="OpcaoAvaliacao" asp-route-questaoId="@item.Id"><i class="fas fa-tools" title="Construir Questão"></i></a>&nbsp;
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="far fa-trash-alt" title="Excluir Questão"></i></a>&nbsp;
+                    </td>
+                    <td style="@(item.Erro == "" ? "color:green" : "color:red")">
+                        <i class="@(item.Erro == "" ? "fas fa-check" : "fas fa-times")" title="@item.Erro"></i>
+                    </td>
+                </tr>
+
+                numeroQuestao++;
+            }
+        }
+    </tbody>
+</table>

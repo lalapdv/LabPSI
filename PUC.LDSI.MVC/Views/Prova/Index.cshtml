@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ProvaPublicadaViewModel>
+
+<h2>Minhas Avaliações</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().AvaliacaoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DataCriacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DataInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DataFim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ValorProva)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NotaObtida)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @item.Materia / @item.Disciplina / @item.Descricao
+            </td>
+            <td>
+                @item.DataCriacao.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @item.DataInicio.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @item.DataFim.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @item.ValorProva
+            </td>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @(item.Status == "Perdida" ? 0m.ToString("N2") : item.Status == "Realizada" ? item.NotaObtida.ToString("N2") : "---")
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

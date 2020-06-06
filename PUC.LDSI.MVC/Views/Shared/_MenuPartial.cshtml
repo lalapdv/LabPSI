@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using PUC.LDSI.Identity.Entities
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (User.HasClaim(c => c.Value == "Professor"))
+    {
+        <a class="btn btn-link navbar-btn navbar-link" style="padding-left:5px;padding-right: 0px;" asp-controller="Turma" asp-action="Index">Turmas</a>
+        <a class="btn btn-link navbar-btn navbar-link" style="padding-left:5px;padding-right: 0px;" asp-controller="Avaliacao" asp-action="Index">Avaliações</a>
+        <a class="btn btn-link navbar-btn navbar-link" style="padding-left:5px;padding-right: 0px;" asp-controller="Publicacao" asp-action="Index">Publicações</a>
+    }
+    else
+    {
+        <a class="btn btn-link navbar-btn navbar-link" style="padding-left:0px;padding-right: 0px;" asp-controller="Prova" asp-action="Index">Minhas Avaliações</a>
+    }
+}
+
+
+

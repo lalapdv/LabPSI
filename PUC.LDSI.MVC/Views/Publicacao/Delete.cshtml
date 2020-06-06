@@ -1,0 +1,55 @@
+﻿@model PublicacaoViewModel
+@{
+    ViewData["Title"] = "Excluir Publicação";
+}
+<h3>Confirma a exclusão desta publicação?</h3>
+<div>
+    <h4>Publicacao</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Avaliação
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Avaliacao.Disciplina) /
+            @Html.DisplayFor(model => model.Avaliacao.Materia) /
+            @Html.DisplayFor(model => model.Avaliacao.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Turma)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Turma.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataCriacao)
+        </dt>
+        <dd>
+            @Model.DataCriacao.ToString("dd/MM/yyyy")
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataInicio)
+        </dt>
+        <dd>
+            @Model.DataInicio.ToString("dd/MM/yyyy")
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataFim)
+        </dt>
+        <dd>
+            @Model.DataFim.ToString("dd/MM/yyyy")
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ValorProva)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ValorProva)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Excluir" class="btn btn-default" />
+        <a asp-action="Index" class="btn btn-default">Cancelar</a>
+    </form>
+</div>

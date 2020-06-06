@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AvaliacaoViewModel>
+
+@{
+    ViewData["Title"] = "Avaliações";
+}
+
+<h2>Avaliações</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-default">Criar Nova</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Professor</th>
+            <th>Disciplina</th>
+            <th>Matéria</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+            <th>Válida</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Professor)</td>
+                <td>@Html.DisplayFor(modelItem => item.Disciplina)</td>
+                <td>@Html.DisplayFor(modelItem => item.Materia)</td>
+                <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit" title="Editar Avaliação"></i></a>&nbsp;
+                    <a asp-action="Index" asp-controller="QuestaoAvaliacao" asp-route-avaliacaoId="@item.Id"><i class="fas fa-tools" title="Construir Avaliação"></i></a>&nbsp;
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="far fa-trash-alt" title="Excluir Avaliação"></i></a>&nbsp;
+                </td>
+                <td style="@(item.EhValida ? "color:green" : "color:red")">
+                    <i class="@(item.EhValida ? "fas fa-check" : "fas fa-times")"
+                       title="@(item.EhValida ? "Avaliação OK" : "Esta avaliação possui pendências a resolver!")"></i>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

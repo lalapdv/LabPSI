@@ -1,0 +1,36 @@
+﻿@model OpcaoAvaliacaoViewModel
+
+@{
+    ViewData["Title"] = "Excluir Questão";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>@Html.DisplayFor(model => model.Questao.Avaliacao.Materia) / @Html.DisplayFor(model => model.Questao.Avaliacao.Disciplina) / @Html.DisplayFor(model => model.Questao.Avaliacao.Descricao)</h4>
+
+<h5>@Html.DisplayFor(model => model.Questao.Enunciado)</h5>
+
+<h4>Confirma a exclusão desta questão?</h4>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Verdadeira)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Verdadeira)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Excluir" class="btn btn-default" />
+        <a asp-action="Index" asp-route-questaoId="@Model.QuestaoId" class="btn btn-default">Cancelar</a>
+    </form>
+</div>
