@@ -23,7 +23,7 @@ namespace PUC.LDSI.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await _publicacaoRepository.ListarPublicacoesDoAlunoAsync(IntegrationUserId);
+            var result = await _publicacaoRepository.ListarProvasPublicadasDoAlunoAsync(IntegrationUserId);
 
             var avaliacoes = Mapper.Map<List<ProvaPublicadaViewModel>>(result.ToList());
 
