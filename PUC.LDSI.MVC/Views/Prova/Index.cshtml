@@ -24,7 +24,10 @@
                 @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().NotaObtida)
+                Nota
+            </th>
+            <th>
+                Ação
             </th>
         </tr>
     </thead>
@@ -51,8 +54,15 @@
                 @item.Status
             </td>
             <td>
-                @(item.Status == "Perdida" ? 0m.ToString("N2") : item.Status == "Realizada" ? item.NotaObtida.ToString("N2") : "---")
+                @(item.Status == "Perdida" ? 0m.ToString("N2") : item.Status == "Realizada" ? 0m.ToString("N2") : "---")
             </td>
+            @if (item.Status == "Disponivel")
+            {
+            <td>
+                <a asp-action="IniciarProva" asp-route-id="@item.AvaliacaoId"><i class="fas fa-play"></i></a>
+            </td>
+            }
+            
         </tr>
         }
     </tbody>
