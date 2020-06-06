@@ -48,7 +48,9 @@ namespace PUC.LDSI.Domain.Services
             ValidarOpcaoAvaliacao(questaoId, verdadeira);
 
             var opcaoAvaliacao = new OpcaoAvaliacao() { QuestaoId = questaoId, Descricao = descricao, Verdadeira = verdadeira };
-
+            var questao = await _questaoAvaliacaoRepository.ObterAsync(questaoId);
+            if (questao.Avaliacao.Publicacoes?.Count > 0)
+                throw new DomainException("Não é permitido alterar uma avaliação que já foi publicada!");
             var erros = opcaoAvaliacao.Validate();
 
             if (erros.Length == 0)
@@ -65,7 +67,9 @@ namespace PUC.LDSI.Domain.Services
         public async Task<int> AdicionarQuestaoAvaliacaoAsync(int avaliacaoId, int tipo, string enunciado)
         {
             var questaoAvaliacao = new QuestaoAvaliacao() { AvaliacaoId = avaliacaoId, Tipo = tipo, Enunciado = enunciado };
-
+            var avaliacao = await _avaliacaoRepository.ObterAsync(avaliacaoId);
+            if (avaliacao.Publicacoes?.Count > 0)
+                throw new DomainException("Não é permitido alterar uma avaliação que já foi publicada!");
             var erros = questaoAvaliacao.Validate();
 
             if (erros.Length == 0)
@@ -82,6 +86,8 @@ namespace PUC.LDSI.Domain.Services
         public async Task<int> AlterarAvaliacaoAsync(int id, string disciplina, string materia, string descricao)
         {
             var avaliacao = await _avaliacaoRepository.ObterAsync(id);
+            if (avaliacao.Publicacoes?.Count > 0)
+                throw new DomainException("Não é permitido alterar uma avaliação que já foi publicada!");
 
             avaliacao.Descricao = descricao;
             avaliacao.Disciplina = disciplina;
@@ -101,7 +107,8 @@ namespace PUC.LDSI.Domain.Services
         public async Task<int> AlterarOpcaoAvaliacaoAsync(int id, string descricao, bool verdadeira)
         {
             var opcaoAvaliacao = await _opcaoAvaliacaoRepository.ObterAsync(id);
-
+            if (opcaoAvaliacao.Questao.Avaliacao.Publicacoes?.Count > 0)
+                throw new DomainException("Não é permitido alterar uma avaliação que já foi publicada!");
             ValidarOpcaoAvaliacao(opcaoAvaliacao.QuestaoId, verdadeira);
 
             opcaoAvaliacao.Descricao = descricao;
@@ -121,7 +128,8 @@ namespace PUC.LDSI.Domain.Services
         public async Task<int> AlterarQuestaoAvaliacaoAsync(int id, int tipo, string enunciado)
         {
             var questaoAvaliacao = await _questaoAvaliacaoRepository.ObterAsync(id);
-
+            if (questaoAvaliacao.Avaliacao.Publicacoes?.Count > 0)
+                throw new DomainException("Não é permitido alterar uma avaliação que já foi publicada!");
             questaoAvaliacao.Tipo = tipo;
             questaoAvaliacao.Enunciado = enunciado;
 
@@ -141,7 +149,7 @@ namespace PUC.LDSI.Domain.Services
             var avaliacao = await _avaliacaoRepository.ObterAsync(id);
 
             if (avaliacao.Publicacoes?.Count > 0)
-                throw new DomainException("Não é possível excluir uma avaliação que já foi publicada ou realizada!");
+                throw new DomainException("Não é permitido alterar uma avaliação que já foi publicada!");
 
             if (avaliacao.Questoes?.Count > 0) 
             {
@@ -183,7 +191,8 @@ namespace PUC.LDSI.Domain.Services
         public async Task<int> ExcluirQuestaoAvaliacaoAsync(int id)
         {
             var questaoAvaliacao = await _questaoAvaliacaoRepository.ObterAsync(id);
-
+            if (questaoAvaliacao.Avaliacao.Publicacoes?.Count>0)
+                throw new DomainException("Não é permitido alterar uma avaliação que já foi publicada!");
             if (questaoAvaliacao.QuestoesProva?.Count > 0)
                 throw new DomainException("Não é possível excluir a questão de uma avaliação que já foi realizada!");
 
@@ -238,7 +247,8 @@ namespace PUC.LDSI.Domain.Services
 
                 if (avaliacao.Publicacoes.Where(x => x.TurmaId == turmaId).Any())
                     throw new DomainException("Essa avaliação já foi publicada para esta turma!");
-
+                if (avaliacao.Questoes.Where(x => x.Opcoes.Where(y => y.Verdadeira).Count() != 1).Any())
+                    throw new DomainException("Esta avaliação possui pendências e não pode ser publicada!");
                 if (!avaliacao.Questoes.Any() || avaliacao.Questoes.Where(x => x.Opcoes.Count < 4).Any())
                     throw new DomainException("Essa avaliação não está completa! É necessário que todas as questões tenham ao menos 4 opções!");
 
