@@ -18,7 +18,7 @@ namespace PUC.LDSI.DataBase.Repository
         public override async Task<QuestaoAvaliacao> ObterAsync(int id) 
         {
             var questao = await _context.QuestaoAvaliacao
-                .Include(a => a.Avaliacao)
+                .Include(a => a.Avaliacao).ThenInclude(uhu=>uhu.Publicacoes)
                 .Include(q => q.QuestoesProva)
                 .Include(o => o.Opcoes)
                 .Where(x => x.Id == id).FirstOrDefaultAsync();
