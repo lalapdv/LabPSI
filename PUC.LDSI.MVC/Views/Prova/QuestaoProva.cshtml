@@ -1,0 +1,52 @@
+@model QuestaoProvaViewModel
+@{
+    ViewData["Title"] = "Questão";
+}
+
+
+<h2>Questao @(item.Numero)</h2>
+
+<h4>@Html.DisplayFor(model => model.Disciplina) / @Html.DisplayFor(model => model.Materia) / @Html.DisplayFor(model => model.Descricao)</h4>
+
+<h2>@(item.EnunciadoQuestao)</h2>
+
+<form method="post" action="QuestaoProva">
+
+    <a onclick="submitForm(-1)"><img src="~/images/esquerda.png" alt="Alternate Text" /></a>
+
+    <table class="table">
+        <tbody>
+            @for (int idx = 0; idx < Model.Opcoes.Count; idx++)
+            {
+                <input type="hidden" asp-for="@Model.Opcoes[idx].Id" />
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="@Model.Opcoes[idx].Resposta" id="teste" /> @Html.DisplayFor(model => model.Opcoes[idx].Descricao)
+                    </label>
+                </div>
+            }
+        </tbody>
+    </table>
+
+    <input id="avancar" type="hidden" asp-for="avancar" />
+
+    <a onclick="submitForm(1)"><img src="~/images/direita.png" alt="Alternate Text" /></a>
+
+</form>
+<script>
+    var init = (function () {
+        $("body").on("click", "input:checkbox", function (e) {
+            if ($("#Tipo").val() == "1" && this.checked) {
+                $('input:checkbox').not(this).prop('checked', !this.checked);
+            }
+        });
+    }());
+    function submitForm(questao) {
+        if (questao == 1) {
+            $("#avancar").val() = 1;
+        } else {
+            $("#avancar").val() = -1;
+        }
+        document.getElementById("myForm").submit();
+    }
+</script>
