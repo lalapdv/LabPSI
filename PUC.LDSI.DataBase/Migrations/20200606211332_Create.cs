@@ -6,12 +6,18 @@ namespace PUC.LDSI.DataBase.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropColumn(
+                name: "NotaObtida",
+                table: "Prova");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.AddColumn<decimal>(
+                name: "NotaObtida",
+                table: "Prova",
+                nullable: false,
+                defaultValue: 0m);
         }
     }
 }

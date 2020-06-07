@@ -4,23 +4,21 @@
 }
 <h2>Concluir Prova</h2>
 
-<h4>@Html.DisplayFor(model => model.Materia) / @Html.DisplayFor(model => model.Disciplina) / @Html.DisplayFor(model => model.Descricao)</h4>
-
 <table>
     <tbody>
 @{
     foreach (var item in Model)
     {
-
+        <h4>@(item.DescricaoAvaliacao)</h4>
         <tr>
-            <td style="@(item.Erro == "" ? "color:green" : "color:red")">
-                <i class="@(item.Erro == "" ? "fas fa-check" : "fas fa-times")" title="@item.Erro"></i>
+            <td style="@(item.EhValida == false ? "color:green" : "color:red")">
+                <i class="@(item.EhValida == true ? "fas fa-check" : "fas fa-times")" title="@item.EhValida"></i>
             </td>
             <td>
                 Questão @(item.Numero)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Enunciado)
+                @Html.DisplayFor(modelItem => item.EnunciadoQuestao)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DescricaoAvaliacao)

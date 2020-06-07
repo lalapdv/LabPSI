@@ -13,7 +13,7 @@ namespace PUC.LDSI.MVC.Models
         public int Tipo { get; set; }
         public int Numero { get; set; } 
         public int Avancar { get; set; }
-        public List<OpcaoProva> OpcoesProva { get; set; }
+        public List<OpcaoProvaViewModel> OpcoesProva { get; set; }
         public string EnunciadoQuestao { get; set; }
         public string DescricaoAvaliacao { get; } 
 

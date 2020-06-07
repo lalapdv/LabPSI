@@ -4,31 +4,33 @@
 }
 
 
-<h2>Questao @(item.Numero)</h2>
+<h2>Questao @(Model.Numero)</h2>
 
-<h4>@Html.DisplayFor(model => model.Disciplina) / @Html.DisplayFor(model => model.Materia) / @Html.DisplayFor(model => model.Descricao)</h4>
+<h4>@Html.DisplayFor(model => model.DescricaoAvaliacao)</h4>
 
-<h2>@(item.EnunciadoQuestao)</h2>
+<h2>@(Model.EnunciadoQuestao)</h2>
 
-<form method="post" action="QuestaoProva">
+<form id="form" method="post" action="QuestaoProva">
 
     <a onclick="submitForm(-1)"><img src="~/images/esquerda.png" alt="Alternate Text" /></a>
 
     <table class="table">
         <tbody>
-            @for (int idx = 0; idx < Model.Opcoes.Count; idx++)
+            @for (int idx = 0; idx < Model.OpcoesProva.Count; idx++)
             {
-                <input type="hidden" asp-for="@Model.Opcoes[idx].Id" />
+                <input type="hidden" asp-for="@Model.OpcoesProva[idx].Id" />
                 <div class="checkbox">
                     <label>
-                        <input asp-for="@Model.Opcoes[idx].Resposta" id="teste" /> @Html.DisplayFor(model => model.Opcoes[idx].Descricao)
+                        <input asp-for="@Model.OpcoesProva[idx].Resposta" id="resposta" /> @Html.DisplayFor(model => model.OpcoesProva[idx].Descricao)
                     </label>
                 </div>
             }
         </tbody>
     </table>
 
-    <input id="avancar" type="hidden" asp-for="avancar" />
+    <input id="avancar" type="hidden" asp-for="Avancar" />
+    <input id="provaId" type="hidden" asp-for="ProvaId" />
+    <input id="questaoId" type="hidden" asp-for="Id" />
 
     <a onclick="submitForm(1)"><img src="~/images/direita.png" alt="Alternate Text" /></a>
 
@@ -48,6 +50,6 @@
         } else {
             $("#avancar").val() = -1;
         }
-        document.getElementById("myForm").submit();
+        document.getElementById("form").submit();
     }
 </script>
