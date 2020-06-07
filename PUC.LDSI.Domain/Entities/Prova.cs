@@ -7,7 +7,8 @@ namespace PUC.LDSI.Domain.Entities
     {
         public int AlunoId { get; set; }
         public int AvaliacaoId { get; set; }
-        public DateTime DataProva { get; set; }
+        public decimal NotaObtida { get; set; }
+        public DateTime? DataProva { get; set; }
         public Aluno Aluno { get; set; }
         public Avaliacao Avaliacao { get; set; }
 
