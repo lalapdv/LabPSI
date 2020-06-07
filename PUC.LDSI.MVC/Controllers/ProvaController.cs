@@ -36,7 +36,9 @@ namespace PUC.LDSI.MVC.Controllers
         {
             var result = IniciarRealizacaoDaProvaAsync(IntegrationUserId);
 
-            return View();
+            var questao = Mapper.Map<QuestaoProvaViewModel>(result);
+
+            return RedirectToAction("QuestaoProva", new { questao });
         }
 
         public async Task<IActionResult> ConcluirProva(int? provaId)
@@ -59,21 +61,23 @@ namespace PUC.LDSI.MVC.Controllers
         public async Task<IActionResult> QuestaoProva(int? provaId, int questaoId = 0, int avancar = 1)
         {
             var result = await _publicacaoRepository.ObterAsync(provaId);
-            
+
             var prova = Mapper.Map<ProvaPublicadaViewModel>(result.ToList());
 
             if (questaoId == 0)
             {
                 var avaliacao = await _avaliacaoRepository.ObterAsync(prova.AvaliacaoId);
-                
-            } else if (questaoId > 0)
+
+            }
+            else if (questaoId > 0)
             {
                 var avaliacao = await _avaliacaoRepository.ObterAsync(prova.AvaliacaoId);
-                
-            } else
+
+            }
+            else
             {
                 var avaliacao = await _avaliacaoRepository.ObterAsync(prova.AvaliacaoId);
-                
+
             }
 
             return View(QuestaoProvaViewModel);
