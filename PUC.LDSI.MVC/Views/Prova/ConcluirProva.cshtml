@@ -1,0 +1,32 @@
+﻿@model IEnumerable<QuestaoProvaViewModel>
+@{
+    ViewData["Title"] = "Questões da Avaliação";
+}
+<h2>Concluir Prova</h2>
+
+<table>
+    <tbody>
+@{
+    foreach (var item in Model)
+    {
+        <h4>@(item.DescricaoAvaliacao)</h4>
+        <tr>
+            <td style="@(item.EhValida == false ? "color:green" : "color:red")">
+                <i class="@(item.EhValida == true ? "fas fa-check" : "fas fa-times")" title="@item.EhValida"></i>
+            </td>
+            <td>
+                Questão @(item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnunciadoQuestao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DescricaoAvaliacao)
+            </td>
+        </tr>
+
+    }
+}
+    </tbody>
+</table>
+

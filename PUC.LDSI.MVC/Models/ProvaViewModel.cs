@@ -24,7 +24,5 @@ namespace PUC.LDSI.MVC.Models
         public DateTime DataFim { get; set; }
         [DisplayName("Valor da Prova")]
         public int ValorProva { get; set; }
-        [DisplayName("Nota")]
-        public decimal NotaObtida { get; set; }
     }
 }

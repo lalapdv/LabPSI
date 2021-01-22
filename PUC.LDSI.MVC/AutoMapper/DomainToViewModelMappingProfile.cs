@@ -29,13 +29,35 @@ namespace PUC.LDSI.MVC.AutoMapper
                 .ForMember(d => d.Status, opt => opt.ResolveUsing(src => StatusProvaResolve(src)));
 
             CreateMap<Publicacao, ProvaViewModel>().ReverseMap();
+
+            CreateMap<QuestaoProva, QuestaoProvaViewModel>()
+                .ForMember(x => x.DescricaoAvaliacao, opt => opt.MapFrom(a => 
+                    a.QuestaoAvaliacao.Avaliacao.Disciplina.Concat(" / " + a.QuestaoAvaliacao.Avaliacao.Materia.Concat(" / " + a.QuestaoAvaliacao.Avaliacao.Descricao))))
+                .ForMember(x => x.EhValida, opt => opt.ResolveUsing(src => StatusQuestao(src)))
+                .ReverseMap();
+
+            CreateMap<OpcaoProva, OpcaoProvaViewModel>().ReverseMap();
+        }
+
+        private bool StatusQuestao(QuestaoProva questao)
+        {
+            if (questao.QuestaoAvaliacao.Tipo == 1)
+            {
+                return true;
+            } else if (questao.QuestaoAvaliacao.Tipo == 2)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
 
         private string StatusProvaResolve(Publicacao publicacao)
         {
             if (publicacao.DataInicio > DateTime.Today)
                 return "Agendada";
-            else if (publicacao.Avaliacao.Provas.Any())
+            else if (publicacao.Avaliacao.Provas.Any() && publicacao.Avaliacao.DataCriacao != null)
                 return "Realizada";
             else if (publicacao.DataFim >= DateTime.Today)
                 return "Disponível";

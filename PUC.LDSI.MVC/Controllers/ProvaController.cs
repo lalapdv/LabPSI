@@ -15,19 +15,80 @@ namespace PUC.LDSI.MVC.Controllers
     public class ProvaController : BaseController
     {
         private readonly IPublicacaoRepository _publicacaoRepository;
+        private readonly IAvaliacaoRepository _avaliacaoRepository;
 
-        public ProvaController(UserManager<Usuario> user, IPublicacaoRepository publicacaoRepository) : base(user)
+        public ProvaController(UserManager<Usuario> user, IPublicacaoRepository publicacaoRepository, IAvaliacaoRepository avaliacaoRepository) : base(user)
         {
             _publicacaoRepository = publicacaoRepository;
+            _avaliacaoRepository = avaliacaoRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await _publicacaoRepository.ListarPublicacoesDoAlunoAsync(IntegrationUserId);
+            var result = await _publicacaoRepository.ListarProvasPublicadasDoAlunoAsync(IntegrationUserId);
 
             var avaliacoes = Mapper.Map<List<ProvaPublicadaViewModel>>(result.ToList());
 
             return View(avaliacoes);
+        }
+
+        public async Task<IActionResult> IniciarProva(int? avaliacaoId)
+        {
+            var result = IniciarRealizacaoDaProvaAsync(IntegrationUserId);
+
+            var questao = Mapper.Map<QuestaoProvaViewModel>(result);
+
+            return RedirectToAction("QuestaoProva", new { questao });
+        }
+
+        public async Task<IActionResult> ConcluirProva(int? provaId)
+        {
+            ObterAsync(provaId);
+
+
+
+            return View(QuestaoProvaViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConcluirProva(QuestaoProvaViewModel questao)
+        {
+            ConcluirProvaAsync(model);
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> QuestaoProva(int? provaId, int questaoId = 0, int avancar = 1)
+        {
+            var result = await _publicacaoRepository.ObterAsync(provaId);
+
+            var prova = Mapper.Map<ProvaPublicadaViewModel>(result.ToList());
+
+            if (questaoId == 0)
+            {
+                var avaliacao = await _avaliacaoRepository.ObterAsync(prova.AvaliacaoId);
+
+            }
+            else if (questaoId > 0)
+            {
+                var avaliacao = await _avaliacaoRepository.ObterAsync(prova.AvaliacaoId);
+
+            }
+            else
+            {
+                var avaliacao = await _avaliacaoRepository.ObterAsync(prova.AvaliacaoId);
+
+            }
+
+            return View(QuestaoProvaViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> QuestaoProva(QuestaoProvaViewModel model)
+        {
+            GravarQuestaoProvaAsync(model);
+
+            return RedirectToAction("QuestaoProva", new { provaId = model.provaId, questaoId = model.questaoId, avancar = model.avancar });
         }
     }
 }
